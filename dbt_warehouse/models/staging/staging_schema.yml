@@ -1,0 +1,43 @@
+version: 2
+
+models:
+  - name: stg_crm_accounts
+    description: Cleaned, standardized CRM account records.
+    columns:
+      - name: account_id
+        tests:
+          - unique
+          - not_null
+      - name: plan
+        tests:
+          - accepted_values:
+              arguments:
+                values: ["starter", "growth", "scale", "enterprise"]
+
+  - name: stg_billing_invoices
+    description: Cleaned billing invoice records.
+    columns:
+      - name: invoice_id
+        tests:
+          - unique
+          - not_null
+      - name: account_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_crm_accounts')
+              field: account_id
+
+  - name: stg_product_usage_events
+    description: Cleaned product usage event records.
+    columns:
+      - name: event_id
+        tests:
+          - unique
+          - not_null
+      - name: account_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_crm_accounts')
+              field: account_id

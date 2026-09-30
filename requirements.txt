@@ -1,0 +1,14 @@
+pandas>=2.0
+duckdb>=1.0
+dbt-core>=1.8
+dbt-duckdb>=1.8
+pytest>=7.4
+
+# Orchestration -- only needed to actually run/schedule the DAG in
+# dags/warehouse_dag.py through a scheduler; the file also runs standalone
+# with plain `python dags/warehouse_dag.py` without Airflow installed.
+# apache-airflow>=2.9
+
+# Production warehouse target (swap in for dbt-duckdb; see
+# dbt_warehouse/profiles.yml for the commented-out Snowflake target):
+# dbt-snowflake>=1.8

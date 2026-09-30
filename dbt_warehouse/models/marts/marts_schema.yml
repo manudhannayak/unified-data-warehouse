@@ -1,0 +1,35 @@
+version: 2
+
+models:
+  - name: dim_accounts
+    description: One row per account with enriched attributes (age, churn flag).
+    columns:
+      - name: account_id
+        tests:
+          - unique
+          - not_null
+
+  - name: fct_revenue_monthly
+    description: Monthly paid/unpaid revenue per account, from billing invoices.
+    columns:
+      - name: account_id
+        tests:
+          - not_null
+
+  - name: fct_engagement_monthly
+    description: Monthly product usage event counts per account.
+    columns:
+      - name: account_id
+        tests:
+          - not_null
+
+  - name: account_360
+    description: >
+      Unified per-account view joining CRM, billing, and product usage --
+      lifetime revenue, total engagement, and last-active month alongside
+      account attributes. Primary mart for CS/RevOps dashboards.
+    columns:
+      - name: account_id
+        tests:
+          - unique
+          - not_null

@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: raw
+    schema: raw
+    tables:
+      - name: crm_accounts
+        description: One row per customer account from the CRM export.
+      - name: billing_invoices
+        description: One row per invoice from the billing system export.
+      - name: product_usage_events
+        description: One row per product usage event from the application event stream.

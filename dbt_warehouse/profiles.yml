@@ -1,0 +1,23 @@
+# Local dev/demo profile -- points dbt at the DuckDB file built by
+# src/load_raw.py. In production this project targets Snowflake; swapping
+# this file for a `type: snowflake` target (account/warehouse/database/
+# schema/role + key-pair or SSO auth) is the only change needed -- the SQL
+# models are warehouse-agnostic (see README for details).
+unified_data_warehouse:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: "../data/warehouse.duckdb"
+      schema: main
+
+    # prod:
+    #   type: snowflake
+    #   account: "{{ env_var('SNOWFLAKE_ACCOUNT') }}"
+    #   user: "{{ env_var('SNOWFLAKE_USER') }}"
+    #   role: transformer
+    #   database: analytics
+    #   warehouse: transforming
+    #   schema: marts
+    #   private_key_path: "{{ env_var('SNOWFLAKE_PRIVATE_KEY_PATH') }}"
+    #   threads: 4
