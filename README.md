@@ -7,6 +7,11 @@ tests enforced at every layer.
 
 ## Architecture
 
+![Architecture diagram](docs/architecture.png)
+
+<details>
+<summary>Text version</summary>
+
 ```
 CRM export ──┐
 Billing export ──┼──► raw.* tables ──► dbt staging (clean/standardize) ──► dbt marts (join/aggregate) ──► account_360
@@ -14,6 +19,11 @@ Usage events ──┘
 
 Orchestrated by: Airflow DAG (extract -> load -> dbt run -> dbt test), daily
 ```
+</details>
+
+**Real dbt-generated lineage graph** for the `account_360` mart (from `dbt docs generate` + `dbt docs serve`):
+
+![dbt lineage graph](docs/dbt_lineage_graph.png)
 
 - **Extract** (`src/generate_sources.py`): synthetic CRM/billing/usage data
   with realistic shape (different grains, keys, and referential structure).
@@ -62,6 +72,16 @@ To query the result:
 ```bash
 python -c "import duckdb; print(duckdb.connect('data/warehouse.duckdb').execute('select * from main_marts.account_360 limit 10').df())"
 ```
+
+![account_360 sample](docs/account_360_sample.png)
+
+Revenue and engagement trends, computed directly from the mart tables:
+
+![Revenue and engagement trends](docs/revenue_engagement_trends.png)
+
+Real `dbt test` output (17 data-quality tests across staging and marts):
+
+![dbt test output](docs/dbt_test_output.png)
 
 To run it on a real Airflow instance, drop `dags/warehouse_dag.py` into your
 `AIRFLOW_HOME/dags` folder — it registers a daily-scheduled DAG named
